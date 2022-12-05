@@ -4,10 +4,10 @@ from datetime import date, timedelta
 
 def bit_crawl():
 
-    yesterday = date.today() - timedelta(3)
+    yesterday = date.today() - timedelta(4)
     yd = yesterday.strftime("%Y%m%d")
 
-    name, marketCap, price, circulatingSupply, symbol = [], [], [], [], []
+    name, marketCap, price = [], [], []
 
     req  = requests.get('https://coinmarketcap.com/historical/'+yd+'/')
     html = req.text
@@ -15,7 +15,6 @@ def bit_crawl():
 
     tr = soup.find_all('tr', attrs={'class':'cmc-table-row'})
 
-    
     count = 0
     
     for row in tr:
@@ -34,26 +33,21 @@ def bit_crawl():
             # Price
             crytoprice = row.find('td', attrs={'class':'cmc-table__cell cmc-table__cell--sortable cmc-table__cell--right cmc-table__cell--sort-by__price'}).text.strip()
             
-            # Circulating supply and symbol            
-            circulatingSupplySymbol = row.find('td', attrs={'class':'cmc-table__cell cmc-table__cell--sortable cmc-table__cell--right cmc-table__cell--sort-by__circulating-supply'}).text.strip()
-            supply = circulatingSupplySymbol.split(' ')[0]
-            sym = circulatingSupplySymbol.split(' ')[1]
             # append the data
             name.append(cryptoname)
             marketCap.append(marketcap)
             price.append(crytoprice)
-            circulatingSupply.append(supply)
-            symbol.append(sym)
 
-    for i in range(11):
-        print(i, yd[i], name[i], price[i], symbol[i], '\n')  
+    for i in range(count):
+        print(i+1, name[i], price[i], '\n')  
 
-    return yd, name, marketCap, price, circulatingSupply, symbol
+    return yd, name, marketCap, price
 
     '''
     for i in [name, marketCap, price, circulatingSupply, symbol]:
         print(i,'\n')
     '''
+
 
 
 if __name__ == "__main__":

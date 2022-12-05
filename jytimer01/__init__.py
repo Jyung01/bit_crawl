@@ -47,12 +47,10 @@ def main(mytimer: func.TimerRequest, tablePath:func.Out[str]) -> None:
         "name": tags[1],
         "marketCap": tags[2],
         "price": tags[3],
-        "circulatingSupply": tags[4],
-        "symbol": tags[5],
         "PartitionKey": "temp",
         "RowKey": time.time() #utc_timestamp
     }
     print("new_data=",new_data)
 
-    tablePath.set(json.dumps(new_data)) # 1 행씩 전달, list [] 필요 없음, dictionary(string) 전달
+    tablePath.set(json.dumps(new_data))
 
